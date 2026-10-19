@@ -1,0 +1,2640 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Ahmed Hytham — Mobile Developer</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230C0C0C'/%3E%3Ctext x='32' y='44' font-family='Arial, sans-serif' font-weight='700' font-size='28' text-anchor='middle' fill='%23BBCCD7'%3EAH%3C/text%3E%3C/svg%3E">
+  <script>if (!matchMedia("(prefers-reduced-motion: reduce)").matches) { document.documentElement.className = "anim"; setTimeout(function () { document.documentElement.classList.remove("anim") }, 3200); }</script>
+  <meta name="description"
+    content="Mobile Developer portfolio of Ahmed Hytham: Ithraa AL-Dammam, Sallahha, MovieBook, Healgen, MedCare and Cyphy Plus — Flutter apps with clean architecture.">
+  <meta property="og:title" content="Ahmed Hytham — Mobile Developer">
+  <meta property="og:description"
+    content="Flutter developer portfolio — Ithraa AL-Dammam, Sallahha, MovieBook, Healgen, MedCare and Cyphy Plus.">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Ahmed Hytham — Mobile Developer">
+  <meta name="twitter:description"
+    content="Flutter developer portfolio — Ithraa AL-Dammam, Sallahha, MovieBook, Healgen, MedCare and Cyphy Plus.">
+  <style>
+    /* ---------- embedded faces ---------- */
+    @font-face {
+      font-family: 'Inter S';
+      src: url(assets/fonts/inter-s-400.woff2) format('woff2');
+      font-weight: 400;
+      font-style: normal;
+      font-display: block
+    }
+
+    @font-face {
+      font-family: 'Inter S';
+      src: url(assets/fonts/inter-s-700.woff2) format('woff2');
+      font-weight: 700;
+      font-style: normal;
+      font-display: block
+    }
+
+    @font-face {
+      font-family: 'Chakra S';
+      src: url(assets/fonts/chakra-s-700.woff2) format('woff2');
+      font-weight: 700;
+      font-style: normal;
+      font-display: block
+    }
+
+    /* ---------- reference unit ----------
+   Every measurement below is a real pixel value read off the 1280x800 reference.
+   --u is the reference pixel: 1px at 1280x800, and it scales with the viewport,
+   so proportions are preserved while the chrome stays anchored to the real edges. */
+    :root {
+      --u: clamp(0.68px, min(100vw / 1280, 100vh / 800), 1.72px);
+      --t: var(--u);
+      /* desktop: content and structure share one scale */
+      --u: clamp(0.68px, min(100vw / 1280, 100dvh / 800), 1.72px);
+      --line: rgba(255, 255, 255, .13);
+      --cream: #e8d1cb;
+      --ink: #15131b;
+      --hair: max(1px, calc(1 * var(--u)));
+      --nudge: calc(1 * var(--t));
+      /* Chrome centres these caps ~1px high */
+    }
+
+    * {
+      box-sizing: border-box
+    }
+
+    html,
+    body {
+      height: 100%
+    }
+
+    body {
+      margin: 0;
+      background: #04070d;
+      overflow-x: hidden;
+      overflow-y: auto;
+      font-family: 'Chakra S', 'Inter S', -apple-system, 'Helvetica Neue', Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: geometricPrecision;
+    }
+
+    .stage {
+      position: relative;
+      height: 100vh;
+      overflow: hidden
+    }
+
+    /* ---------- hero image: graded exactly as the reference, cover, centred ---------- */
+    .bg {
+      position: absolute;
+      inset: 0;
+      background-image: url(assets/img/background.webp);
+      background-size: cover;
+      background-position: 50% 50%;
+      background-repeat: no-repeat
+    }
+
+    /* the video box is sized to cover the stage at 16:9 (no object-fit crop, so it can
+   move without exposing an edge). The arch sits ~4% left of centre in the clip:
+   scale up 10% and shift the box right by 4.5% of its own width. */
+    .bg video {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      display: block;
+      width: max(100vw, 177.78vh);
+      height: max(100vh, 56.25vw);
+      transform: translate(-45.5%, -50%) scale(1.1)
+    }
+
+    /* one clip per chapter, stacked; the chosen one fades up over the last */
+    .bg video {
+      opacity: 0;
+      transition: opacity .9s ease
+    }
+
+    .bg video.on {
+      opacity: 1
+    }
+
+    /* chapter change: the headline drops back into its mask and the paragraph
+   settles out, the copy is swapped, and both return the way they entered */
+    .hero .hrise {
+      transition: transform .5s var(--e-mask)
+    }
+
+    .hero .blurb {
+      transition: opacity .4s ease, transform .4s ease
+    }
+
+    .swapping .hrise {
+      transform: translateY(112%)
+    }
+
+    .swapping .blurb {
+      opacity: 0;
+      transform: translateY(calc(7*var(--t)))
+    }
+
+    /* ---------- frame: 30u inset, 1px hairline, 26u chamfer on all four corners ---------- */
+    .frame {
+      position: absolute;
+      left: calc(30*var(--u));
+      top: calc(64*var(--u));
+      right: calc(30*var(--u));
+      bottom: calc(31*var(--u))
+    }
+
+    .ln {
+      position: absolute;
+      background: var(--line)
+    }
+
+    .ln-t {
+      left: calc(26*var(--u));
+      right: calc(26*var(--u));
+      top: 0;
+      height: var(--hair)
+    }
+
+    .ln-b {
+      left: calc(26*var(--u));
+      right: calc(26*var(--u));
+      bottom: 0;
+      height: var(--hair)
+    }
+
+    .ln-l {
+      top: calc(26*var(--u));
+      bottom: calc(26*var(--u));
+      left: 0;
+      width: var(--hair)
+    }
+
+    .ln-r {
+      top: calc(26*var(--u));
+      bottom: calc(26*var(--u));
+      right: 0;
+      width: var(--hair)
+    }
+
+    .cn {
+      position: absolute;
+      width: calc(26*var(--u));
+      height: calc(26*var(--u))
+    }
+
+    .cn-tl {
+      left: 0;
+      top: 0;
+      background: linear-gradient(to bottom right, transparent calc(50% - .65px), var(--line) calc(50% - .65px), var(--line) calc(50% + .65px), transparent calc(50% + .65px))
+    }
+
+    .cn-br {
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(to bottom right, transparent calc(50% - .65px), var(--line) calc(50% - .65px), var(--line) calc(50% + .65px), transparent calc(50% + .65px))
+    }
+
+    .cn-tr {
+      right: 0;
+      top: 0;
+      background: linear-gradient(to bottom left, transparent calc(50% - .65px), var(--line) calc(50% - .65px), var(--line) calc(50% + .65px), transparent calc(50% + .65px))
+    }
+
+    .cn-bl {
+      left: 0;
+      bottom: 0;
+      background: linear-gradient(to bottom left, transparent calc(50% - .65px), var(--line) calc(50% - .65px), var(--line) calc(50% + .65px), transparent calc(50% + .65px))
+    }
+
+    /* ---------- shared label face ---------- */
+    .lbl {
+      font-family: 'Chakra S', 'Inter S', sans-serif;
+      font-weight: 700;
+      font-size: calc(12*var(--t));
+      line-height: 1;
+      white-space: nowrap
+    }
+
+    .t {
+      position: relative;
+      top: var(--nudge);
+      display: inline-block;
+      text-align: left;
+      white-space: pre
+    }
+
+    .bg {
+      will-change: transform;
+      transform-origin: 50% 50%;
+      backface-visibility: hidden
+    }
+
+    /* the footage starts below an expanded top band, so the whole scene sits lower */
+    .bg {
+      top: calc(34*var(--u))
+    }
+
+    /* ---------- masthead ---------- */
+    .logo {
+      position: fixed;
+      left: calc(18*var(--t));
+      top: calc(12*var(--t));
+      width: auto;
+      height: calc(41*var(--t));
+      display: flex;
+      align-items: center;
+      z-index: 900
+    }
+
+    .logo svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+      fill: #000
+    }
+
+    .logo-text {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      font-family: 'Chakra S', 'Inter S', sans-serif;
+      font-weight: 700;
+      font-size: calc(19*var(--t));
+      letter-spacing: calc(1.6*var(--t));
+      color: #fff;
+      -webkit-text-stroke: calc(0.8*var(--t)) #000;
+      text-stroke: calc(0.8*var(--t)) #000;
+      paint-order: stroke fill;
+      text-shadow: 0 0 14px rgba(0, 0, 0, .75);
+      white-space: nowrap
+    }
+
+    .masthead {
+      position: fixed;
+      right: calc(18*var(--t));
+      top: calc(12*var(--t));
+      display: flex;
+      align-items: center;
+      z-index: 900
+    }
+
+    .navset {
+      display: contents
+    }
+
+    .links {
+      display: flex;
+      align-items: center;
+      gap: calc(14.4*var(--t));
+      margin-right: calc(18*var(--t))
+    }
+
+    .links a {
+      color: #fff;
+      text-decoration: none;
+      /* NAV TEXT SIZE — change 14 here to resize the nav labels (12 = previous size) */
+      font-size: calc(14*var(--t));
+      letter-spacing: calc(.1*var(--t));
+      padding-left: calc(.1*var(--t));
+      opacity: .94;
+      white-space: nowrap;
+      flex: none;
+      -webkit-text-stroke: calc(0.7*var(--t)) #000;
+      text-stroke: calc(0.7*var(--t)) #000;
+      paint-order: stroke fill;
+      text-shadow: 0 0 12px rgba(0, 0, 0, .7);
+      transition: opacity .25s ease, color .25s ease
+    }
+
+    .links a:hover {
+      opacity: 1;
+      color: #fff
+    }
+
+    /* nav labels are hard-locked to one line: nowrap (specificity .links .t)
+       beats the generic .t { white-space: pre } below, so even a stray source
+       line break can never render as a second line */
+    .links .t {
+      white-space: nowrap
+    }
+
+    .pill {
+      height: calc(41*var(--t));
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      position: relative;
+      cursor: pointer;
+      border: 0;
+      padding: 0
+    }
+
+    .pill .ico {
+      flex: none;
+      display: block
+    }
+
+    .resume {
+      width: auto;
+      padding: 0 calc(19*var(--t)) 0 calc(17*var(--t));
+      background: #0C0C0C;
+      border: 1px solid rgba(215, 226, 234, .24);
+      border-radius: 999px;
+      transition: background .3s ease, border-color .3s ease, transform .3s ease
+    }
+
+    .resume:hover {
+      background: #D7E2EA;
+      border-color: #D7E2EA;
+      transform: translateY(calc(-1*var(--t)))
+    }
+
+    .resume:hover .ico {
+      fill: #0C0C0C
+    }
+
+    .resume:hover span {
+      color: #0C0C0C
+    }
+
+    .resume .ico {
+      width: calc(9*var(--t));
+      height: calc(10*var(--t));
+      fill: #fff
+    }
+
+    .resume span {
+      color: #fff;
+      margin-left: calc(7*var(--t));
+      letter-spacing: calc(.33*var(--t))
+    }
+
+    .menu {
+      display: none;
+      background: transparent;
+      border: 0;
+      padding: 0 calc(12*var(--t));
+      cursor: pointer
+    }
+
+    .menu .ico {
+      width: calc(12*var(--t));
+      height: calc(5*var(--t));
+      fill: #D7E2EA
+    }
+
+    .menu span {
+      color: #D7E2EA;
+      margin-left: calc(7*var(--t))
+    }
+
+    .menu:hover .ico,
+    .menu:hover span {
+      color: #fff
+    }
+
+    /* ---------- glass gradient UNDER the video (below the hero area) ---------- */
+    .hero-glass {
+      position: relative;
+      left: 0;
+      right: 0;
+      height: calc(170*var(--t));
+      background: linear-gradient(to bottom,
+          rgba(20, 27, 38, 0) 0%,
+          rgba(20, 27, 38, .4) 40%,
+          #141B26 100%);
+      backdrop-filter: blur(calc(22*var(--t))) saturate(180%);
+      -webkit-backdrop-filter: blur(calc(22*var(--t))) saturate(180%);
+      border-top: 1px solid rgba(255, 255, 255, .12);
+      box-shadow:
+        0 -20px 60px rgba(0, 0, 0, .6),
+        0 -8px 24px rgba(255, 255, 255, .06);
+      pointer-events: none;
+      z-index: 3;
+    }
+
+    /* ---------- center title stack ---------- */
+    .hero {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: calc(14*var(--t));
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center
+    }
+
+    .hero-core {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: calc(8*var(--t));
+      text-align: center
+    }
+
+    .name {
+      margin: 0;
+      font-weight: 900;
+      font-size: calc(48*var(--t));
+      line-height: 1;
+      letter-spacing: calc(1.5*var(--t));
+      color: #fff;
+      text-transform: uppercase;
+      -webkit-text-stroke: calc(1.4*var(--t)) #000;
+      text-stroke: calc(1.4*var(--t)) #000;
+      paint-order: stroke fill;
+      text-shadow: 0 0 24px rgba(0, 0, 0, .85);
+      font-family: 'Chakra S', 'Inter S', sans-serif
+    }
+
+    .role {
+      margin: 0;
+      font-weight: 800;
+      font-size: calc(24*var(--t));
+      line-height: 1;
+      letter-spacing: calc(1.2*var(--t));
+      color: #8b9dff;
+      text-transform: uppercase;
+      -webkit-text-stroke: calc(1.2*var(--t)) #000;
+      paint-order: stroke fill;
+      text-shadow: 0 0 20px rgba(0, 0, 0, .95);
+      font-family: 'Chakra S', 'Inter S', sans-serif
+    }
+
+    .stack {
+      display: flex;
+      flex-direction: column;
+      margin-top: calc(10*var(--t))
+    }
+
+    .stack-icons {
+      display: flex;
+      gap: calc(14*var(--t));
+      justify-content: center;
+      align-items: center
+    }
+
+    .stack-icon {
+      width: calc(55*var(--t));
+      height: calc(55*var(--t));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(4, 7, 13, .12);
+      border: 1px solid rgba(215, 226, 234, .28);
+      border-radius: calc(10*var(--t));
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+      transition: transform .25s ease, border-color .25s ease
+    }
+
+    .stack-icon:hover {
+      transform: translateY(calc(-2*var(--t)));
+      border-color: rgba(215, 226, 234, .5)
+    }
+
+    .stack-icon svg {
+      width: calc(100*var(--t));
+      height: calc(100*var(--t));
+      display: block
+    }
+
+    .stack-icon.flutter-icon svg {
+      filter: drop-shadow(0 0 8px rgba(3, 169, 244, 0.6))
+    }
+
+    .stack-icon.android-icon svg {
+      filter: drop-shadow(0 0 8px rgba(164, 198, 57, 0.6));
+      -webkit-text-stroke: calc(0.7*var(--t)) #000;
+    }
+
+    .summary {
+      max-width: 560px;
+      margin: calc(12*var(--t)) auto 0;
+      font-family: 'Chakra S', 'Inter S', sans-serif;
+      font-weight: 700;
+      font-size: clamp(1rem, 2vw, 1.35rem);
+      line-height: 1.625;
+      text-align: center;
+      color: #fff;
+      -webkit-text-stroke: calc(0.7*var(--t)) #000;
+      text-stroke: calc(0.7*var(--t)) #000;
+      paint-order: stroke fill;
+      text-shadow: 0 0 16px rgba(0, 0, 0, .85)
+    }
+
+    /* character-level reveal: the invisible placeholder keeps the natural
+       wrap , the live copy layers above and fades with scroll progress.
+       Ghost chars read as blue-steel ink lines so they catch the eye on
+       the white sky footage; completed chars light up white + halo. */
+    .summary .char {
+      position: relative
+    }
+
+    .summary .ph {
+      visibility: hidden
+    }
+
+    .summary .rv {
+      position: absolute;
+      left: 0;
+      top: 0;
+      color: transparent;
+      -webkit-text-stroke: calc(0.9*var(--t)) rgba(139, 157, 255, .9);
+      text-shadow: 0 0 10px rgba(139, 157, 255, .45);
+      opacity: .2;
+      will-change: opacity
+    }
+
+    .summary .rv.lit {
+      color: #fff;
+      -webkit-text-stroke: calc(0.7*var(--t)) #000;
+      text-shadow: 0 0 16px rgba(0, 0, 0, .85)
+    }
+
+    /* ---------- quick social chips under the summary (same icons as contact) ---------- */
+    .hero-socials {
+      margin-top: calc(16*var(--t));
+      margin-bottom: calc(28*var(--t));
+      display: flex;
+      gap: calc(14*var(--t));
+      justify-content: center;
+      align-items: center
+    }
+
+    .contact-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #8b9dff;
+      animation: icon-beat 2.6s ease-in-out infinite;
+      transition: color .3s ease
+    }
+
+    .contact-icon svg {
+      width: calc(35*var(--t));
+      height: calc(35*var(--t));
+      fill: currentColor;
+      display: block
+    }
+
+    .hero-socials .contact-icon {
+      width: calc(44*var(--t));
+      height: calc(44*var(--t));
+      background: rgba(255, 255, 255, .08);
+      border: 1px solid rgba(255, 255, 255, .18);
+      border-radius: calc(12*var(--t));
+      box-shadow: 0 0 20px rgba(0, 0, 0, .3);
+      text-decoration: none
+    }
+
+    .hero-socials .contact-icon:hover {
+      background: rgba(255, 255, 255, .14);
+      border-color: rgba(255, 255, 255, .3)
+    }
+
+    @keyframes icon-beat {
+
+      0%,
+      100% {
+        transform: translateY(0) scale(1);
+        filter: drop-shadow(0 0 0 rgba(139, 157, 255, 0))
+      }
+
+      40% {
+        transform: translateY(calc(-3*var(--t))) scale(1.08);
+        filter: drop-shadow(0 0 calc(7*var(--t)) rgba(139, 157, 255, .9))
+      }
+
+      60% {
+        transform: translateY(calc(-1*var(--t))) scale(.98);
+        filter: drop-shadow(0 0 calc(4*var(--t)) rgba(139, 157, 255, .5))
+      }
+    }
+
+    .xgrid2 .xcontact:nth-child(1) .contact-icon,
+    .hero-socials .contact-icon:nth-child(1) {
+      animation-delay: 0s
+    }
+
+    .xgrid2 .xcontact:nth-child(2) .contact-icon,
+    .hero-socials .contact-icon:nth-child(2) {
+      animation-delay: .3s
+    }
+
+    .xgrid2 .xcontact:nth-child(3) .contact-icon,
+    .hero-socials .contact-icon:nth-child(3) {
+      animation-delay: .6s
+    }
+
+    /* ---------- scroll cue centered bottom + shredded down arrow glow hover ---------- */
+    .scroll-cue {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: calc(12*var(--t));
+      margin-top: auto;
+      padding-bottom: calc(26*var(--t));
+    }
+
+    .scroll-label.lbl {
+      color: #fff;
+      letter-spacing: calc(1.2*var(--t));
+      text-transform: uppercase;
+      -webkit-text-stroke: calc(1.4*var(--t)) #000;
+      text-stroke: calc(1.4*var(--t)) #000;
+      paint-order: stroke fill;
+      text-shadow: 0 0 14px rgba(0, 0, 0, .85);
+    }
+
+    .scroll-label:hover {
+      color: #fff
+    }
+
+    .shred-arrow {
+      position: relative;
+      width: calc(16*var(--t));
+      height: calc(30*var(--t));
+    }
+
+    .shred {
+      position: absolute;
+      left: 50%;
+      width: calc(2.5*var(--t));
+      background: linear-gradient(to bottom, #fff, rgba(255, 255, 255, 0));
+      transform: translateX(-50%);
+      opacity: 0;
+      filter: drop-shadow(0 0 8px rgba(255, 255, 255, .4));
+      transition: all .45s cubic-bezier(.2, .7, .2, 1);
+    }
+
+    .shred.s1 {
+      top: 0;
+      height: 28%;
+      transform: translateX(-50%) rotate(3deg)
+    }
+
+    .shred.s2 {
+      top: 12%;
+      height: 52%;
+      transform: translateX(-50%) rotate(6deg)
+    }
+
+    .shred.s3 {
+      top: 25%;
+      height: 78%;
+      transform: translateX(-50%) rotate(0deg)
+    }
+
+    .shred.s4 {
+      top: 38%;
+      height: 52%;
+      transform: translateX(-50%) rotate(-6deg)
+    }
+
+    .shred.s5 {
+      top: 50%;
+      height: 28%;
+      transform: translateX(-50%) rotate(-3deg)
+    }
+
+    .shred-arrow:hover .shred {
+      opacity: 1;
+      height: 100%;
+      top: 0;
+      background: linear-gradient(to bottom, #fff, #8b9dff);
+      filter: drop-shadow(0 0 18px #fff) drop-shadow(0 0 45px rgba(255, 255, 255, .5));
+    }
+
+    @keyframes shredFloat {
+
+      0%,
+      100% {
+        transform: translateX(-50%) translateY(0)
+      }
+
+      50% {
+        transform: translateX(-50%) translateY(calc(-5*var(--t)))
+      }
+    }
+
+    .shred-arrow:hover .s1 {
+      animation: shredFloat 2.2s ease-in-out infinite 0s
+    }
+
+    .shred-arrow:hover .s2 {
+      animation: shredFloat 2.2s ease-in-out infinite 0.25s
+    }
+
+    .shred-arrow:hover .s3 {
+      animation: shredFloat 2.2s ease-in-out infinite 0.5s
+    }
+
+    .shred-arrow:hover .s4 {
+      animation: shredFloat 2.2s ease-in-out infinite 0.75s
+    }
+
+    .shred-arrow:hover .s5 {
+      animation: shredFloat 2.2s ease-in-out infinite 1s
+    }
+
+    /* ---------- dock ---------- */
+    .dock {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: calc(47*var(--t));
+      --nudge: calc(1.6*var(--t))
+    }
+
+    .dock .rule {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      height: var(--hair);
+      background: var(--line)
+    }
+
+    .dock .div {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: var(--hair);
+      background: rgba(255, 255, 255, .21);
+      box-shadow: 0 0 16px rgba(255, 255, 255, .35)
+    }
+
+    .dock .div-l {
+      left: calc(116*var(--t))
+    }
+
+    .dock .div-r {
+      right: calc(139*var(--t))
+    }
+
+    .dock a,
+    .dock button {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      background: none;
+      border: 0;
+      padding: 0;
+      cursor: pointer;
+      color: rgba(0, 0, 0, .85);
+      transition: color .3s ease
+    }
+
+    .dock a:hover,
+    .dock button:hover {
+      color: #000
+    }
+
+    .scroll {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      top: 0;
+      bottom: 0
+    }
+
+    .scroll .ico {
+      width: calc(5*var(--t));
+      height: calc(7*var(--t));
+      flex: none;
+      fill: currentColor;
+      position: relative;
+      top: calc(-1*var(--t))
+    }
+
+    .scroll span {
+      margin-left: calc(10*var(--t));
+      letter-spacing: calc(-.23*var(--t))
+    }
+
+    .talk {
+      position: absolute;
+      right: calc(24*var(--t));
+      top: 0;
+      bottom: 0
+    }
+
+    .talk span {
+      letter-spacing: calc(.12*var(--t))
+    }
+
+    .talk .ico {
+      width: calc(16*var(--t));
+      height: calc(15*var(--t));
+      margin-left: calc(11*var(--t));
+      flex: none;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.6
+    }
+
+    /* ================= ENTRANCE =================
+   One sequence, once, on load. The photograph is the stage and never moves.
+   Four behaviours only:
+     DRAW    the frame and dock hairlines scale from their anchor — the
+             architecture builds itself before anything is said
+     MASK    wordmark and headline rise out of an overflow mask
+     DECODE  every micro-label resolves with the site's own effect (JS)
+     SETTLE  supporting copy, pills and controls arrive on a 7-unit lift
+
+   Timeline (ms from first paint):
+     40   frame top + left draw from the top-left corner
+     160  wordmark masked rise
+     200  frame right + bottom draw back toward it
+     300  ENTER pill, 360 MENU pill
+     340  nav group, labels decoding from 360
+     420  headline line 1 masked rise, 520 line 2
+     550  frame corners resolve
+     600  index rail, 640 active marker, labels decoding from 660
+     700  paragraph settles
+     860  CTA settles, label decodes at 900
+     920  dock rule draws, cells and labels follow to 1120
+     ~1520 last motion ends. Nothing animates afterwards. */
+    :root {
+      --e-mask: cubic-bezier(.16, 1, .3, 1);
+      /* expo-out: long, confident tail */
+      --e-line: cubic-bezier(.65, 0, .35, 1);
+      /* a drawn stroke, not a fade */
+      --e-soft: cubic-bezier(.22, .61, .36, 1);
+      /* power2-out for small settles */
+    }
+
+    @keyframes drawX {
+      from {
+        transform: scaleX(0)
+      }
+
+      to {
+        transform: scaleX(1)
+      }
+    }
+
+    @keyframes drawY {
+      from {
+        transform: scaleY(0)
+      }
+
+      to {
+        transform: scaleY(1)
+      }
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0
+      }
+
+      to {
+        opacity: 1
+      }
+    }
+
+    @keyframes maskUp {
+      from {
+        transform: translateY(112%)
+      }
+
+      to {
+        transform: translateY(0)
+      }
+    }
+
+    @keyframes settle {
+      from {
+        opacity: 0;
+        transform: translateY(calc(7*var(--t)))
+      }
+
+      to {
+        opacity: 1;
+        transform: none
+      }
+    }
+
+    @keyframes markIn {
+      from {
+        transform: translateY(-50%) scaleX(0)
+      }
+
+      to {
+        transform: translateY(-50%) scaleX(1)
+      }
+    }
+
+    /* DRAW — two strokes leave the top-left corner, two answer from the bottom-right */
+    .anim .ln-t {
+      transform-origin: left center;
+      animation: drawX .5s var(--e-line) .04s both
+    }
+
+    .anim .ln-l {
+      transform-origin: center top;
+      animation: drawY .5s var(--e-line) .04s both
+    }
+
+    .anim .ln-b {
+      transform-origin: right center;
+      animation: drawX .5s var(--e-line) .2s both
+    }
+
+    .anim .ln-r {
+      transform-origin: center bottom;
+      animation: drawY .5s var(--e-line) .2s both
+    }
+
+    .anim .cn {
+      animation: fadeIn .3s linear .55s both
+    }
+
+    /* MASK — the wordmark rises inside its own box, no wrapper needed */
+    .anim .logo {
+      overflow: hidden
+    }
+
+    .anim .logo svg {
+      animation: maskUp .8s var(--e-mask) .16s both
+    }
+
+    .anim .logo-text .t {
+      animation: maskUp .8s var(--e-mask) .16s both
+    }
+
+    /* SETTLE — masthead */
+    .anim .resume {
+      animation: settle .56s var(--e-soft) .3s both
+    }
+
+    .anim .links {
+      animation: fadeIn .4s linear .34s both
+    }
+
+    /* MASK — the headline is the one moment that carries weight */
+    .headline .hrow {
+      display: block;
+      overflow: hidden
+    }
+
+    .headline .hrise {
+      display: block
+    }
+
+    .anim .headline .hrise {
+      animation: maskUp .9s var(--e-mask) both
+    }
+
+    .anim .headline .hrow:first-child .hrise {
+      animation-delay: .42s
+    }
+
+    .anim .headline .hrow+.hrow .hrise {
+      animation-delay: .52s
+    }
+
+    /* the rail arrives as one group; its stagger is carried by the decoding labels */
+    .anim .index {
+      animation: fadeIn .45s linear .6s both
+    }
+
+    .anim .index .on::before {
+      animation: markIn .42s var(--e-soft) .64s both
+    }
+
+    .anim .blurb {
+      animation: settle .72s var(--e-soft) .7s both
+    }
+
+    .anim .cta {
+      animation: settle .62s var(--e-soft) .86s both
+    }
+
+    /* DRAW + SETTLE — the dock closes the composition */
+    .anim .dock .rule {
+      transform-origin: left center;
+      animation: drawX .52s var(--e-line) .92s both
+    }
+
+    .anim .dock .div {
+      transform-origin: center top;
+      animation: drawY .36s var(--e-line) 1.06s both
+    }
+
+    @keyframes settleC {
+      from {
+        opacity: 0;
+        transform: translate(-50%, calc(7*var(--t)))
+      }
+
+      to {
+        opacity: 1;
+        transform: translateX(-50%)
+      }
+    }
+
+    .anim .scroll {
+      animation: settleC .52s var(--e-soft) 1.02s both
+    }
+
+    .anim .talk {
+      animation: settle .52s var(--e-soft) 1.08s both
+    }
+
+    /* ---------- a11y ---------- */
+    a:focus-visible,
+    button:focus-visible {
+      outline: calc(1.5*var(--t)) solid #e8d1cb;
+      outline-offset: calc(3*var(--t))
+    }
+
+    .sr {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      margin: -1px;
+      padding: 0;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      white-space: nowrap;
+      border: 0
+    }
+
+    @media (prefers-reduced-motion:reduce) {
+      * {
+        transition: none !important;
+        animation: none !important
+      }
+    }
+
+    /* ---------- tablet ----------
+   The desktop architecture is one uniform scale of the 1280x800 canvas:
+   u = min(100vw/1280, 100dvh/800). It holds while that scale is generous —
+   at 1366x1024 (12.9" landscape) it is 1.07, at 1180x820 it is 0.92. It
+   fails at u < 0.9, where the 10px labels drop under 9px and the body copy
+   under 10px; that is 1152px wide. Below that the type unit is pinned and
+   the boxes carrying type size to their content, so the composition stops
+   being a shrinking miniature and becomes a layout at its own scale, while
+   the frame keeps scaling with the viewport. At the boundary both units are
+   0.9 and every content-sized box resolves to its desktop width, so the
+   architectures meet without a visible step. */
+    @media (max-width: 1152px) {
+      :root {
+        --u: clamp(.8px, min(100vw / 1280, 100vh / 800), 1.1px);
+        --u: clamp(.8px, min(100vw / 1280, 100dvh / 800), 1.1px);
+        /* type grows fluidly as the viewport narrows: 0.9 at the breakpoint,
+       matching the desktop scale exactly, up to 1.12 where the phone block
+       takes over at the same value — both boundaries are stepless */
+        --t: max(var(--u), clamp(.9px, calc(.9px + (1152px - 100vw) * .00042), 1.12px));
+      }
+
+      /* pills and the CTA size to their label instead of to a fixed canvas width;
+     the paddings are the reference's own internal measurements, so at the
+     breakpoint these resolve to 87/90/190 units exactly as before */
+      .resume {
+        width: auto;
+        padding: 0 calc(19*var(--t)) 0 calc(17*var(--t))
+      }
+
+      .cta {
+        width: auto;
+        padding: 0 calc(19*var(--t))
+      }
+
+      /* the dock's cells become content-aware; the dividers become their edges,
+     landing on the same 116/139 offsets at the breakpoint */
+      .dock {
+        display: flex;
+        justify-content: space-between;
+        align-items: stretch
+      }
+
+      .dock .div {
+        display: none
+      }
+
+      .talk {
+        padding: 0 min(calc(24*var(--t)), 6vw) 0 min(calc(20*var(--t)), 5vw);
+        border-left: var(--hair) solid rgba(255, 255, 255, .21)
+      }
+
+      /* touch targets grow inside the existing boxes — nothing moves */
+      .links {
+        gap: calc(17*var(--t));
+        align-self: stretch
+      }
+
+      .links a {
+        display: flex;
+        align-items: center;
+        align-self: stretch
+      }
+    }
+
+    /* The hero image is 16:10. Once the viewport is narrower than ~6/5 the frame
+   crops the mountains away and the index rail loses the dark ground it reads
+   against, so the rail moves up into the sky band and the hero takes the full
+   width below it. Above that ratio the rail keeps its centred desktop
+   position and the hero reserves its column. */
+    @media (max-width: 1152px) and (min-aspect-ratio: 6/5) {
+      .hero {
+        padding-inline: calc(150*var(--t))
+      }
+    }
+
+    @media (max-width: 1152px) and (max-aspect-ratio: 6/5) {
+      .hero {
+        padding-inline: calc(22*var(--t))
+      }
+    }
+
+    /* ---------- navigation collapse ----------
+   The bar holds logo + links + both pills while the gap between the wordmark
+   and the first link stays above an eighth of the frame width. With the type
+   growing as the viewport narrows that gap closes at ~830px, so from there
+   the same nav set becomes a panel hung off the MENU pill — the site's own
+   dots icon is the burger. No markup is duplicated: .navset is
+   display:contents in the bar and a flex panel here. */
+    @media (max-width: 830px) {
+      .navset {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        position: absolute;
+        top: calc(52*var(--t));
+        right: 0;
+        min-width: calc(196*var(--t));
+        padding: calc(16*var(--t)) calc(20*var(--t)) calc(18*var(--t));
+        gap: calc(4*var(--t));
+        background: rgba(11, 16, 26, .74);
+        -webkit-backdrop-filter: blur(calc(16*var(--t)));
+        backdrop-filter: blur(calc(16*var(--t)));
+        clip-path: polygon(0 0, calc(100% - 15*var(--t)) 0, 100% calc(15*var(--t)), 100% 100%,
+            calc(15*var(--t)) 100%, 0 calc(100% - 15*var(--t)));
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(calc(-6*var(--t)));
+        transition: opacity .34s ease, transform .34s cubic-bezier(.22, .61, .36, 1), visibility .34s;
+        z-index: 6;
+      }
+
+      .nav-open .navset {
+        opacity: 1;
+        visibility: visible;
+        transform: none
+      }
+
+      .links {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+        margin-right: 0;
+        align-self: auto
+      }
+
+      .links a {
+        padding: calc(9*var(--t)) 0;
+        justify-content: flex-start
+      }
+
+      .menu {
+        display: flex
+      }
+
+      .navset .resume {
+        width: auto;
+        align-self: stretch;
+        justify-content: flex-start;
+        margin-top: calc(10*var(--t));
+        height: calc(38*var(--t));
+        padding: 0 calc(16*var(--t));
+        background: #0C0C0C
+      }
+    }
+
+
+    /* ---------- mobile ----------
+   The tablet architecture holds further than a conventional phone breakpoint
+   would suggest. Measured down the range: the masthead still has 189px
+   between wordmark and menu at 560, the headline keeps its two hand-set
+   lines to 487, the dock keeps 200px of slack to 400. What fails first is
+   the paragraph — its four hand-set lines need 452px of measure, so at
+   549px the block breaks into five ragged lines with an orphan. That is the
+   real breaking point, so mobile begins at 548.
+
+   The architecture here: the hand-set breaks are released so the copy finds
+   its own measure, the wordmark becomes fluid so it never crowds the menu,
+   the frame margins tighten proportionally, the rail climbs clear of the
+   subject as the frame crops to it, and the type scale simply carries over
+   from the tablet boundary rather than shrinking — a phone is held closer,
+   not read at arm's length. */
+    @media (max-width: 548px) {
+      :root {
+        --u: clamp(.62px, min(100vw / 500, 100vh / 820), 1.1px);
+        --u: clamp(.62px, min(100vw / 500, 100dvh / 820), 1.1px);
+        /* 1.12 at the breakpoint, matching tablet exactly, easing to a 1.06 floor */
+        --t: clamp(1.06px, calc(100vw / 489), 1.12px);
+      }
+
+      .frame {
+        left: calc(22*var(--u));
+        right: calc(22*var(--u));
+        top: calc(22*var(--u));
+        bottom: calc(22*var(--u))
+      }
+
+      /* the wordmark rides level with the nav, stroke-only */
+      .logo {
+        left: calc(9*var(--t));
+        top: calc(46*var(--t));
+        width: auto;
+        aspect-ratio: auto;
+        height: calc(41*var(--t))
+      }
+
+      .masthead {
+        right: calc(9*var(--t));
+        top: calc(46*var(--t))
+      }
+
+      /* the frame now crops to the subject itself, so the rail stops floating
+     beside the composition and docks under the wordmark, in the sky band —
+     the one region that stays dark at every phone crop. Its rhythm tightens
+     just enough to clear the stone, and the inactive items carry slightly
+     more weight to hold up against a brighter backdrop. */
+      .hero {
+        bottom: max(9%, calc(59*var(--t)));
+        padding-inline: calc(18*var(--t))
+      }
+
+      .headline {
+        text-wrap: balance
+      }
+
+      .blurb {
+        max-width: calc(400*var(--t))
+      }
+
+      .blurb br {
+        display: none
+      }
+
+      /* the headline wraps freely here, so it lifts as one block instead of per line */
+      .headline .hrow {
+        display: inline;
+        overflow: visible
+      }
+
+      .headline .hrise {
+        display: inline
+      }
+
+      .anim .headline .hrise {
+        animation: none
+      }
+
+      .anim .headline {
+        animation: settle .8s var(--e-mask) .42s both
+      }
+
+      .hero .headline {
+        transition: opacity .4s ease
+      }
+
+      .swapping .headline {
+        opacity: 0
+      }
+    }
+
+    /* ---------- narrow mobile ----------
+   Measured: the dock's three cells hold one row down to 365px, where the
+   centre cue meets the contact control. Below that the cue takes a row of
+   its own — the two controls split the row above it, keeping the same
+   hairline language — rather than the labels being shrunk or dropped. */
+    @media (max-width: 370px) {
+      .dock {
+        height: auto;
+        flex-wrap: wrap
+      }
+
+      .scroll {
+        position: static;
+        transform: none;
+        order: 1;
+        flex: 1 0 100%;
+        justify-content: center;
+        height: calc(40*var(--t));
+        border-top: var(--hair) solid rgba(255, 255, 255, .13)
+      }
+
+      .anim .scroll {
+        animation-name: settle
+      }
+
+      .hero {
+        bottom: calc(96*var(--t))
+      }
+    }
+
+    /* last resort only: on a screen too short to hold the whole composition the
+   supporting paragraph steps aside rather than the layout clipping */
+    @media (max-height: 560px),
+    (max-width: 370px) and (max-height: 640px) {
+      .blurb {
+        display: none
+      }
+    }
+
+    /* ---------- below the fold ----------
+   The hero above stays exactly one screen; everything below scrolls.
+   Same faces, same hairlines, same dark stage. */
+    .below {
+      position: relative;
+      background: #141B26;
+      color: #e8eaf5;
+      padding: calc(64*var(--u)) calc(60*var(--u)) calc(60*var(--u));
+      display: flex;
+      flex-direction: column;
+      gap: clamp(48px, 7vw, 96px)
+    }
+
+    .band {
+      --p2-radius: 40px;
+      position: relative;
+      background: #0C0C0C;
+      border: 1px solid rgba(215, 226, 234, .14);
+      border-radius: var(--p2-radius);
+      padding: clamp(40px, 6vw, 72px) clamp(16px, 4vw, 48px) clamp(48px, 7vw, 96px);
+      box-sizing: border-box
+    }
+
+    @media (min-width: 640px) {
+      .band {
+        --p2-radius: 50px
+      }
+    }
+
+    @media (min-width: 768px) {
+      .band {
+        --p2-radius: 60px
+      }
+    }
+
+    .band-kicker {
+      margin: 0 0 clamp(24px, 4vw, 48px);
+      text-align: center;
+      font-family: 'Chakra S', 'Inter S', sans-serif;
+      font-weight: 700;
+      font-size: clamp(34px, 6vw, 84px);
+      letter-spacing: -.02em;
+      text-transform: uppercase;
+      color: #BBCCD7;
+      background: linear-gradient(180deg, #646973 0%, #BBCCD7 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent
+    }
+
+    .band h2 {
+      display: none
+    }
+
+    .xcard {
+      border: 1px solid rgba(215, 226, 234, .14);
+      border-radius: clamp(18px, 2.4vw, 28px);
+      padding: clamp(20px, 2.6vw, 32px) clamp(22px, 2.8vw, 34px);
+      margin: 0;
+      background: #131417;
+      transition: border-color .3s ease, background .3s ease, box-shadow .45s cubic-bezier(.2, .7, .2, 1), transform .45s cubic-bezier(.2, .7, .2, 1)
+    }
+
+    .xcard:hover {
+      border-color: rgba(215, 226, 234, .32);
+      background: #16181c;
+      /* 3D glow: dark elevation for depth beneath the cool light halo,
+         plus a small lift so the card reads as floating */
+      box-shadow:
+        0 34px 70px rgba(4, 7, 13, .55),
+        0 0 40px rgba(215, 226, 234, .14);
+      transform: translateY(calc(-5*var(--t)))
+    }
+
+    .xcard h3 {
+      margin: .15em 0 .35em;
+      font-family: 'Chakra S', 'Inter S', sans-serif;
+      font-size: calc(22*var(--t));
+      color: #F4F8FB
+    }
+
+    .xcard p {
+      font-size: calc(16*var(--t));
+      line-height: 1.7;
+      color: rgba(215, 226, 234, .78)
+    }
+
+    .xmeta {
+      font-family: 'Chakra S', 'Inter S', sans-serif;
+      font-weight: 700;
+      font-size: calc(11.5*var(--t));
+      letter-spacing: calc(1.2*var(--t));
+      color: #646973
+    }
+
+    .xrole {
+      color: rgba(187, 204, 215, .65) !important;
+      font-weight: 700
+    }
+
+    .xcard ul {
+      margin: .5em 0;
+      padding-left: 1.2em;
+      font-size: calc(15*var(--t));
+      line-height: 1.7;
+      color: rgba(215, 226, 234, .78)
+    }
+
+    .xtags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: calc(8*var(--t));
+      margin: calc(10*var(--t)) 0 0
+    }
+
+    .xtags span {
+      font-family: 'Chakra S', 'Inter S', sans-serif;
+      font-weight: 700;
+      font-size: calc(12*var(--t));
+      letter-spacing: calc(.6*var(--t));
+      text-transform: uppercase;
+      color: #BBCCD7;
+      background: rgba(215, 226, 234, .08);
+      border: 1px solid rgba(215, 226, 234, .16);
+      border-radius: 999px;
+      padding: calc(7*var(--t)) calc(14*var(--t))
+    }
+
+    .xcerts {
+      list-style: none;
+      padding-left: 0 !important
+    }
+
+    .skill-3d {
+      display: flex;
+      flex-wrap: wrap;
+      gap: clamp(14px, 2vw, 24px);
+      max-width: 1120px;
+      margin: 0 auto
+    }
+
+    .skill-card-3d {
+      flex: 1 1 clamp(260px, 30%, 420px);
+      box-sizing: border-box;
+      transition: transform .45s cubic-bezier(.2, .7, .2, 1), box-shadow .45s cubic-bezier(.2, .7, .2, 1);
+      cursor: pointer
+    }
+
+    .skill-card-3d h3 {
+      margin: .15em 0 .5em;
+      font-size: calc(20*var(--t));
+      color: #F4F8FB
+    }
+
+    /* ---------- projects: six sticky stacked cards. targetScale =
+       1 - (totalCards - 1 - index) * 0.03, offset top: index * 28px,
+       h-85vh containers sticky at top-24 / md:top-32 ---------- */
+    .p2 {
+      --p2-radius: 40px;
+      --p2-pad: 16px;
+      position: relative;
+      z-index: 10;
+      background: #0C0C0C;
+      border: 1px solid rgba(215, 226, 234, .14);
+      border-radius: var(--p2-radius);
+      padding: clamp(40px, 6vw, 72px) clamp(16px, 4vw, 48px) clamp(130px, 17vw, 230px);
+      box-sizing: border-box
+    }
+
+    @media (min-width: 640px) {
+      .p2 {
+        --p2-radius: 50px;
+        --p2-pad: 24px
+      }
+    }
+
+    @media (min-width: 768px) {
+      .p2 {
+        --p2-radius: 60px;
+        --p2-pad: 32px
+      }
+    }
+
+    .p2-head {
+      margin: 0 0 clamp(28px, 5vw, 64px);
+      text-align: center;
+      font-family: 'Chakra S', 'Inter S', sans-serif;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: -.03em;
+      line-height: .92;
+      font-size: clamp(44px, 8.5vw, 120px);
+      background: linear-gradient(180deg, #646973 0%, #BBCCD7 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: #BBCCD7
+    }
+
+    .p2-stack {
+      display: flex;
+      flex-direction: column
+    }
+
+    .p2-cell {
+      height: 85vh;
+      position: sticky;
+      top: 64px
+    }
+
+    @media (min-width: 768px) {
+      .p2-cell {
+        top: 88px
+      }
+    }
+
+    .p2-card {
+      width: min(1180px, 100%);
+      margin: 0 auto;
+      height: 100%;
+      background: #0C0C0C;
+      border: 2px solid #D7E2EA;
+      border-radius: var(--p2-radius);
+      padding: var(--p2-pad);
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      transform-origin: 50% 0;
+      will-change: transform;
+      overflow: hidden
+    }
+
+    .p2-top {
+      /* uniform reserve across all six cards (covers the tallest stack:
+         wrapped bilingual name + 4-lines desc) so media canvases match */
+      min-height: calc(190*var(--t));
+      display: flex;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: clamp(14px, 2.5vw, 36px);
+      margin-bottom: clamp(14px, 2vw, 26px)
+    }
+
+    .p2-num {
+      font-family: 'Chakra S', 'Inter S', sans-serif;
+      font-weight: 700;
+      font-size: clamp(40px, 7vw, 92px);
+      line-height: .9;
+      letter-spacing: -.02em;
+      background: linear-gradient(180deg, #646973 0%, #BBCCD7 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: #BBCCD7
+    }
+
+    .p2-id {
+      flex: 1;
+      min-width: 200px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px
+    }
+
+    .p2-cat {
+      font-family: 'Chakra S', 'Inter S', sans-serif;
+      font-weight: 700;
+      font-size: clamp(9px, 1.05vw, 12px);
+      letter-spacing: .32em;
+      text-transform: uppercase;
+      color: #646973
+    }
+
+    .p2-name {
+      font-family: 'Chakra S', 'Inter S', sans-serif;
+      font-weight: 700;
+      font-size: clamp(20px, 3.2vw, 42px);
+      line-height: 1.05;
+      letter-spacing: -.01em;
+      color: #F4F8FB
+    }
+
+    .p2-desc {
+      margin: 4px 0 0;
+      font-family: 'Inter S', sans-serif;
+      font-size: clamp(11px, 1.2vw, 14px);
+      line-height: 1.65;
+      color: rgba(187, 204, 215, .78);
+      max-width: 680px
+    }
+
+    .p2-pill {
+      flex: none;
+      display: inline-flex;
+      align-items: center;
+      margin-left: auto;
+      padding: clamp(9px, 1.2vw, 13px) clamp(16px, 2vw, 26px);
+      border: 2px solid #D7E2EA;
+      border-radius: 999px;
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      font-family: 'Chakra S', 'Inter S', sans-serif;
+      font-weight: 700;
+      font-size: clamp(9px, 1vw, 12px);
+      line-height: 1;
+      color: #D7E2EA;
+      transition: background .25s ease, color .25s ease
+    }
+
+    .p2-pill:hover {
+      background: #D7E2EA;
+      color: #0C0C0C
+    }
+
+    .p2-note {
+      flex: none;
+      display: inline-flex;
+      align-items: center;
+      margin-left: auto;
+      padding: clamp(9px, 1.2vw, 13px) clamp(16px, 2vw, 26px);
+      border: 2px dashed rgba(215, 226, 234, .35);
+      border-radius: 999px;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      font-family: 'Chakra S', 'Inter S', sans-serif;
+      font-weight: 700;
+      font-size: clamp(9px, 1vw, 12px);
+      line-height: 1;
+      color: rgba(215, 226, 234, .55)
+    }
+
+    .p2-actions {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: clamp(8px, 1vw, 12px);
+      flex-wrap: wrap
+    }
+
+    .p2-desc {
+      /* reserve exactly 4 lines (4 × 1.5 line-height) so every card's text
+         stack is the same height — the media canvases below all render identical */
+      min-height: 6em
+    }
+
+    .p2-media {
+      flex: 1;
+      min-height: clamp(200px, 26vw, 390px);
+      border-radius: var(--p2-radius);
+      overflow: hidden;
+      background: #131417;
+      position: relative;
+      padding: clamp(6px, 1vw, 12px);
+      box-sizing: border-box
+    }
+
+    .p2-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      cursor: zoom-in
+    }
+
+    .p2-ph {
+      position: absolute;
+      inset: 8px;
+      border: 2px dashed rgba(215, 226, 234, .16);
+      border-radius: calc(var(--p2-radius) - 6px);
+      background: repeating-linear-gradient(45deg, rgba(215, 226, 234, .035) 0 14px, transparent 14px 28px);
+      display: flex;
+      align-items: center;
+      justify-content: center
+    }
+
+    .p2-ph span {
+      font-family: 'Chakra S', 'Inter S', sans-serif;
+      font-weight: 700;
+      font-size: clamp(8px, .9vw, 11px);
+      letter-spacing: .3em;
+      text-transform: uppercase;
+      color: rgba(215, 226, 234, .35)
+    }
+
+    @media (max-width: 639px) {
+      .p2-media {
+        min-height: clamp(180px, 46vw, 300px)
+      }
+    }
+
+    .backdrop-blur-xl {
+      backdrop-filter: blur(24px)
+    }
+
+    .xgrid2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: clamp(14px, 2vw, 24px);
+      max-width: 1120px;
+      margin: 0 auto
+    }
+
+    .xcontact {
+      display: flex;
+      flex-direction: column;
+      gap: calc(6*var(--t));
+      border: 2px solid #D7E2EA;
+      border-radius: clamp(16px, 2vw, 24px);
+      padding: calc(20*var(--t)) calc(22*var(--t));
+      text-decoration: none;
+      background: transparent;
+      transition: background .25s ease
+    }
+
+    .xcontact .contact-icon {
+      color: #BBCCD7
+    }
+
+    .xcontact span {
+      font-family: 'Inter S', sans-serif;
+      font-size: calc(12*var(--t));
+      color: rgba(215, 226, 234, .75)
+    }
+
+    .xcontact:hover {
+      background: #D7E2EA
+    }
+
+    .xcontact:hover .contact-icon {
+      color: #0C0C0C
+    }
+
+    .xcontact:hover span {
+      color: rgba(12, 12, 12, .8)
+    }
+
+    .contact-icon:hover {
+      color: #000
+    }
+
+    .xfoot {
+      margin-top: calc(30*var(--t));
+      font-size: calc(11*var(--t));
+      color: rgba(232, 238, 250, .45)
+    }
+
+    @media (max-width: 700px) {
+      .xgrid2 {
+        grid-template-columns: 1fr
+      }
+    }
+
+    /* ---------- fullscreen image viewer ----------
+       the card media opens the same file fullscreen; click / Esc to close */
+    .lb {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      background: rgba(4, 7, 13, .9);
+      -webkit-backdrop-filter: blur(calc(10*var(--t)));
+      backdrop-filter: blur(calc(10*var(--t)));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: clamp(16px, 4vw, 56px);
+      cursor: zoom-out;
+      opacity: 0;
+      transition: opacity .25s ease
+    }
+
+    .lb.on {
+      opacity: 1
+    }
+
+    .lb[hidden] {
+      display: none
+    }
+
+    .lb img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      border-radius: 12px;
+      box-shadow: 0 30px 90px rgba(0, 0, 0, .7)
+    }
+
+    .lb-x {
+      position: absolute;
+      top: clamp(12px, 2.5vw, 26px);
+      right: clamp(14px, 2.5vw, 30px);
+      font-family: 'Chakra S', 'Inter S', sans-serif;
+      font-weight: 700;
+      font-size: clamp(14px, 1.6vw, 18px);
+      color: #D7E2EA;
+      border: 2px solid rgba(215, 226, 234, .35);
+      border-radius: 999px;
+      width: clamp(32px, 3vw, 40px);
+      height: clamp(32px, 3vw, 40px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background .25s ease, color .25s ease
+    }
+
+    .lb:hover .lb-x {
+      background: #D7E2EA;
+      color: #0C0C0C
+    }
+
+    body.lb-open {
+      overflow: hidden
+    }
+
+    /* ---------- back to top ---------- */
+    .totop {
+      position: fixed;
+      right: calc(16*var(--t));
+      bottom: calc(16*var(--t));
+      z-index: 890;
+      width: calc(46*var(--t));
+      height: calc(46*var(--t));
+      border: 2px solid rgba(215, 226, 234, .5);
+      border-radius: 999px;
+      background: rgba(10, 15, 26, .58);
+      -webkit-backdrop-filter: blur(calc(14*var(--t)));
+      backdrop-filter: blur(calc(14*var(--t)));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(calc(8*var(--t)));
+      transition: opacity .3s ease, transform .3s ease, visibility .3s, background .25s ease, border-color .25s ease
+    }
+
+    .totop.on {
+      opacity: 1;
+      visibility: visible;
+      transform: none
+    }
+
+    .totop svg {
+      width: calc(12*var(--t));
+      height: calc(8*var(--t));
+      fill: #fff
+    }
+
+    .totop:hover {
+      background: #D7E2EA;
+      border-color: #D7E2EA
+    }
+
+    .totop:hover svg {
+      fill: #0C0C0C
+    }
+  </style>
+</head>
+
+<body>
+  <div class="stage">
+    <div class="bg" role="img" aria-label="A stone arch standing in still water between dark mountains at dusk">
+      <video class="on" data-chapter="vision" src="assets/video/bg_upscaled.mp4" poster="assets/img/background.webp"
+        autoplay muted loop playsinline preload="auto" aria-hidden="true"></video>
+      <video data-chapter="expression" data-src="assets/video/bg_upscaled.mp4" muted loop playsinline preload="none"
+        aria-hidden="true"></video>
+      <video data-chapter="craftsmanship" data-src="assets/video/bg_upscaled.mp4" muted loop playsinline preload="none"
+        aria-hidden="true"></video>
+      <video data-chapter="refinement" data-src="assets/video/bg_upscaled.mp4" muted loop playsinline preload="none"
+        aria-hidden="true"></video>
+      <video data-chapter="balance" data-src="assets/video/bg_upscaled.mp4" muted loop playsinline preload="none"
+        aria-hidden="true"></video>
+      <video data-chapter="origin" data-src="assets/video/bg_upscaled.mp4" muted loop playsinline preload="none"
+        aria-hidden="true"></video>
+    </div>
+
+    <div class="frame">
+      <span class="ln ln-t"></span><span class="ln ln-b"></span>
+      <span class="ln ln-l"></span><span class="ln ln-r"></span>
+      <span class="cn cn-tl"></span><span class="cn cn-tr"></span>
+      <span class="cn cn-bl"></span><span class="cn cn-br"></span>
+
+      <a class="logo logo-text" href="#" aria-label="Ahmed Hytham — home"><span class="t">AHMED HYTHAM</span></a>
+
+      <nav class="masthead" aria-label="Main">
+        <div class="navset" id="navset">
+          <div class="links lbl">
+            <a href="#experience"><span class="t">EXPERIENCE</span></a>
+            <a href="#skills"><span class="t">SKILLS AND TOOLS</span></a>
+            <a href="#projects"><span class="t">PROJECTS</span></a>
+            <a href="#contact"><span class="t">CONTACT</span></a>
+          </div>
+          <a class="pill resume lbl" href="#" title="Resume PDF — file pending" aria-label="Download resume">
+            <!-- [PLACEHOLDER] Resume file not provided yet: set href="assets/Ahmed-Hytham-Resume.pdf" download when the PDF lands in stratum/assets/ -->
+            <svg class="ico" viewBox="0 0 12 13" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M4.9 0h2.2v5.9l2.3-2.3L11 5.2 6 10.2 1 5.2l1.6-1.6 2.3 2.3z" />
+              <rect x="0" y="11" width="12" height="2" />
+            </svg>
+            <span class="t">RESUME</span>
+          </a>
+        </div>
+
+        <button class="pill menu lbl" type="button" aria-expanded="false" aria-controls="navset">
+          <svg class="ico" viewBox="0 0 12 5" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect x="0" y="1" width="3" height="3" />
+            <rect x="4.5" y="1" width="3" height="3" />
+            <rect x="9" y="1" width="3" height="3" />
+          </svg>
+          <span class="t">MENU</span>
+        </button>
+      </nav>
+
+      <div class="hero">
+        <div class="hero-core">
+          <h1 class="name">Ahmed Hytham</h1>
+          <h2 class="role">Mobile Developer</h2>
+          <div class="stack">
+            <div class="stack-icons">
+              <div class="stack-icon flutter-icon" aria-label="Flutter" role="img">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <defs>
+                    <linearGradient id="flutterGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stop-color="#02569B" />
+                      <stop offset="100%" stop-color="#03A9F4" />
+                    </linearGradient>
+                  </defs>
+                  <path
+                    d="M14.314 0L2.3 12 6 15.7 21.684.013h-7.357zm.014 11.072L7.857 17.53l6.47 6.47H21.7l-6.46-6.468 6.46-6.46h-7.37z"
+                    fill="url(#flutterGrad)" />
+                </svg>
+              </div>
+              <div class="stack-icon android-icon" aria-label="Android" role="img">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <path
+                    d="M18.4395 5.5586c-.675 1.1664-1.352 2.3318-2.0274 3.498-.0366-.0155-.0742-.0286-.1113-.043-1.8249-.6957-3.484-.8-4.42-.787-1.8551.0185-3.3544.4643-4.2597.8203-.084-.1494-1.7526-3.021-2.0215-3.4864a1.1451 1.1451 0 0 0-.1406-.1914c-.3312-.364-.9054-.4859-1.379-.203-.475.282-.7136.9361-.3886 1.5019 1.9466 3.3696-.0966-.2158 1.9473 3.3593.0172.031-.4946.2642-1.3926 1.0177C2.8987 12.176.452 14.772 0 18.9902h24c-.119-1.1108-.3686-2.099-.7461-3.0683-.7438-1.9118-1.8435-3.2928-2.7402-4.1836a12.1048 12.1048 0 0 0-2.1309-1.6875c.6594-1.122 1.312-2.2559 1.9649-3.3848.2077-.3615.1886-.7956-.0079-1.1191a1.1001 1.1001 0 0 0-.8515-.5332c-.5225-.0536-.9392.3128-1.0488.5449zm-.0391 8.461c.3944.5926.324 1.3306-.1563 1.6503-.4799.3197-1.188.0985-1.582-.4941-.3944-.5927-.324-1.3307.1563-1.6504.4727-.315 1.1812-.1086 1.582.4941zM7.207 13.5273c.4803.3197.5506 1.0577.1563 1.6504-.394.5926-1.1038.8138-1.584.4941-.48-.3197-.5503-1.0577-.1563-1.6504.4008-.6021 1.1087-.8106 1.584-.4941z"
+                    fill="#3DDC84" />
+                </svg>
+              </div>
+            </div>
+          </div>
+          <p class="summary">Dedicated aspirant with proven experience building scalable Flutter applications.
+            Proficient in cross-platform mobile development, cloud integrations, and hardware troubleshooting, with a
+            strong commitment to writing clean, high-performance code for real-world solutions.</p>
+          <div class="hero-socials" aria-label="Fast contact">
+            <a class="contact-icon" href="mailto:ahmedhytham48@gmail.com" aria-label="Email">
+              <svg viewBox="0 0 24 24">
+                <path
+                  d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
+              </svg>
+            </a>
+            <a class="contact-icon" href="https://github.com/AhmedHythamSMT" target="_blank" rel="noopener noreferrer"
+              aria-label="GitHub">
+              <svg viewBox="0 0 16 16">
+                <path
+                  d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z" />
+              </svg>
+            </a>
+            <a class="contact-icon" href="https://www.linkedin.com/in/ahmedhythamsmt/" target="_blank"
+              rel="noopener noreferrer" aria-label="LinkedIn">
+              <svg viewBox="0 0 24 24">
+                <path
+                  d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.36V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.59 0 4.25 2.36 4.25 5.44v6.3zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z" />
+              </svg>
+            </a>
+          </div>
+        </div>
+        <div class="scroll-cue">
+          <span class="scroll-label lbl">SCROLL TO UNCOVER</span>
+          <div class="shred-arrow">
+            <span class="shred s1"></span>
+            <span class="shred s2"></span>
+            <span class="shred s3"></span>
+            <span class="shred s4"></span>
+            <span class="shred s5"></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="dock">
+        <span class="rule"></span><span class="div div-l"></span><span class="div div-r"></span>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-glass"></div>
+
+  <main class="below">
+    <section class="band" id="experience" aria-labelledby="expH">
+      <p class="lbl band-kicker"><span>EXPERIENCE</span></p>
+      <div class="xgrid2">
+        <article class="xcard">
+          <p class="xmeta">2026 — Present · Remote</p>
+          <h3>Flutter Developer Freelancer</h3>
+          <p class="xrole">Self-employed</p>
+          <p>Small freelance gigs delivered with clean, maintainable mobile engineering.</p>
+          <ul>
+            <li>Re-optimized existing Flutter apps for speed and smooth 60 fps scrolling</li>
+            <li>Secured app data with encrypted local storage and safe API handling</li>
+            <li>Refactored legacy codebases with Clean Architecture and Cubit state management</li>
+          </ul>
+        </article>
+        <article class="xcard">
+          <p class="xmeta">2024 — 2025 · Remote</p>
+          <h3>Flutter Developer — Ithraa' AL-Dammam R.S, Saudi Arabia</h3>
+          <p class="xrole">Real estate & maintenance services</p>
+          <p>Built clean, scalable mobile app connecting residents with maintenance services across Saudi compounds.</p>
+          <ul>
+            <li>Admin dashboard with project and compound management workflows</li>
+            <li>Firestore database structure rules and security</li>
+            <li>Cloud Functions for backend automation and serverless operations</li>
+            <li>FCM notifications system for real-time user engagement</li>
+          </ul>
+        </article>
+        <article class="xcard">
+          <p class="xmeta">2022 — Present · Hybrid</p>
+          <h3>IT Support Freelancer</h3>
+          <p class="xrole">Self-employed</p>
+          <p>PC and laptop tweaks for 100+ users. Network and end-device issue resolution, locally and remotely.</p>
+          <p>Troubleshooting technical issues using remote tools.</p>
+          <p>Enhanced system efficiency by performing regular software and hardware maintenance.</p>
+          <p>Anydesk | Team Viewer | Rust Desk</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="band" id="skills" aria-labelledby="skH">
+      <p class="lbl band-kicker"><span>SKILLS AND TOOLS</span></p>
+      <div class="skill-3d">
+        <article class="xcard skill-card-3d">
+          <h3>Mobile Development</h3>
+          <p class="xtags">
+            <span>Flutter</span><span>Dart</span><span>Java</span><span>Kotlin</span><span>Bloc/Cubit</span><span>Provider</span><span>GetX</span><span>Clean
+              Architecture</span><span>MVVM/MVP</span><span>Dio</span>
+          </p>
+        </article>
+        <article class="xcard skill-card-3d">
+          <h3>Backend and Cloud</h3>
+          <p class="xtags"><span>Firebase</span><span>Supabase</span><span>REST
+              APIs</span><span>Node.js</span><span>Drift/SQlite</span><span>PostgreSQL</span><span>MySQL</span><span>Hive</span><span>FCM</span><span>Cloud
+              Functions</span></p>
+        </article>
+        <article class="xcard skill-card-3d">
+          <h3>Tools and Practices</h3>
+          <p class="xtags"><span>Git/GitHub</span><span>CI/CD</span><span>Design
+              Patterns</span><span>Background Services</span><span>Secure
+              Storage</span><span>VS Code</span><span>Postman</span><span>Agile/Scrum</span><span>SOLID Principle</span>
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section class="p2" id="projects" aria-labelledby="prH">
+      <h2 id="prH" class="p2-head">Project</h2>
+
+      <div class="p2-stack">
+
+        <div class="p2-cell">
+          <article class="p2-card" style="top:0px">
+            <div class="p2-top">
+              <span class="p2-num">01</span>
+              <div class="p2-id">
+                <span class="p2-cat">Commercial Real-Estate Platform</span>
+                <span class="p2-name">Ithraa AL-Dammam · إثراء الدمام العقارية</span>
+                <p class="p2-desc">Real estate app facilitating villa searches and connecting residents with
+                  maintenance services across Saudi Arabian compounds — Clean Architecture and Cubit, OTP auth, FCM,
+                  geolocation, bilingual AR/EN. Live on both app stores.</p>
+              </div>
+              <div class="p2-actions">
+                <a class="p2-pill"
+                  href="https://apps.apple.com/sa/app/%D8%A5%D8%AB%D8%B1%D8%A7%D8%A1-%D8%A7%D9%84%D8%AF%D9%85%D8%A7%D9%85-%D8%A7%D9%84%D8%B9%D9%82%D8%A7%D8%B1%D9%8A%D8%A9/id6749855373"
+                  target="_blank" rel="noopener noreferrer">App Store</a>
+                <a class="p2-pill"
+                  href="https://play.google.com/store/apps/details?id=com.Ithra.ithra&amp;hl=en&amp;pli=1"
+                  target="_blank" rel="noopener noreferrer">Google Play</a>
+              </div>
+            </div>
+            <div class="p2-media">
+              <img src="assets/img/projects/ithraa/ITHRAA.png" alt="Ithraa AL-Dammam — app cover" loading="lazy">
+            </div>
+          </article>
+        </div>
+
+        <div class="p2-cell">
+          <article class="p2-card" style="top:28px">
+            <div class="p2-top">
+              <span class="p2-num">02</span>
+              <div class="p2-id">
+                <span class="p2-cat">Field-Service Operations</span>
+                <span class="p2-name">Sallahha — FieldOps (صلّحها)</span>
+                <p class="p2-desc">Offline-first field-service management for small Egyptian
+                  AC-maintenance companies — request → assign → technician offline job with proof → confirm and rate.
+                  Flutter, Supabase, Riverpod and Drift/SQLite, bilingual AR/EN.</p>
+              </div>
+              <a class="p2-pill" href="https://github.com/AhmedHythamSMT/sallahha" target="_blank"
+                rel="noopener noreferrer">Live Project</a>
+            </div>
+            <div class="p2-media">
+              <img src="assets/img/projects/sallahha/SALLAHHA.png" alt="Sallahha FieldOps — app cover" loading="lazy">
+            </div>
+          </article>
+        </div>
+
+        <div class="p2-cell">
+          <article class="p2-card" style="top:56px">
+            <div class="p2-top">
+              <span class="p2-num">03</span>
+              <div class="p2-id">
+                <span class="p2-cat">Entertainment &amp; Cinema</span>
+                <span class="p2-name">MovieBook</span>
+                <p class="p2-desc">Movie discovery app powered by the TMDB API — search, trailers, cast and reviews,
+                  curated collections and a personal wishlist with account sign-in and registration. Jetpack Compose,
+                  MVVM ViewModels, Repository pattern, Retrofit and Firebase.</p>
+              </div>
+              <a class="p2-pill" href="https://github.com/AhmedHythamSMT/MovieBookApp" target="_blank"
+                rel="noopener noreferrer">Live Project</a>
+            </div>
+            <div class="p2-media">
+              <img src="assets/img/projects/moviebook/MOVIEBOOK.png" alt="MovieBook — app cover" loading="lazy">
+            </div>
+          </article>
+        </div>
+
+        <div class="p2-cell">
+          <article class="p2-card" style="top:84px">
+            <div class="p2-top">
+              <span class="p2-num">04</span>
+              <div class="p2-id">
+                <span class="p2-cat">AI Healthcare Platform</span>
+                <span class="p2-name">Healgen</span>
+                <p class="p2-desc">Bilingual AI healthcare platform with a Flutter frontend and a Python-driven
+                  backend — Clean Architecture throughout, Node.js services and AI-driven features.</p>
+              </div>
+              <span class="p2-note">Private</span>
+            </div>
+            <div class="p2-media">
+              <img src="assets/img/projects/healgen/HealGen.png" alt="Healgen — app cover" loading="lazy">
+            </div>
+          </article>
+        </div>
+
+        <div class="p2-cell">
+          <article class="p2-card" style="top:112px">
+            <div class="p2-top">
+              <span class="p2-num">05</span>
+              <div class="p2-id">
+                <span class="p2-cat">Patient–Physician Care</span>
+                <span class="p2-name">MedCare</span>
+                <p class="p2-desc">Healthcare app connecting patients with doctors — Firebase/Google Auth, Firestore,
+                  Cubit, Clean Architecture, local storage and notifications.</p>
+              </div>
+              <a class="p2-pill" href="https://github.com/AhmedHythamSMT/medcare" target="_blank"
+                rel="noopener noreferrer">Live Project</a>
+            </div>
+            <div class="p2-media">
+              <img src="assets/img/projects/medcare/MEDCARE.png" alt="MedCare — app cover" loading="lazy">
+            </div>
+          </article>
+        </div>
+
+        <div class="p2-cell">
+          <article class="p2-card" style="top:140px">
+            <div class="p2-top">
+              <span class="p2-num">06</span>
+              <div class="p2-id">
+                <span class="p2-cat">Hardware &amp; IoT</span>
+                <span class="p2-name">Cyphy Plus</span>
+                <p class="p2-desc">Encrypted chat between ESP32 devices over Bluetooth with a Caesar-shift cipher you
+                  control, plus a man-in-the-middle cryptanalysis tool — passive monitoring, active intercept and
+                  auto-crack across all 26 shifts.</p>
+              </div>
+              <a class="p2-pill" href="https://github.com/AhmedHythamSMT/CyphyPlus" target="_blank"
+                rel="noopener noreferrer">Live Project</a>
+            </div>
+            <div class="p2-media">
+              <img src="assets/img/projects/cyphy/cyphyplus.png" alt="Cyphy Plus — app cover" loading="lazy">
+            </div>
+          </article>
+        </div>
+
+      </div>
+    </section>
+
+    <section class="band" id="contact" aria-labelledby="ctH">
+      <p class="lbl band-kicker"><span>CONTACT</span></p>
+      <h2 id="ctH">Talk with me</h2>
+      <div class="xgrid2">
+        <a class="xcontact" href="mailto:ahmedhytham48@gmail.com"><strong class="contact-icon" aria-hidden="true"><svg
+              viewBox="0 0 24 24">
+              <path
+                d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
+            </svg></strong><span>ahmedhytham48@gmail.com</span></a>
+        <a class="xcontact" href="https://github.com/AhmedHythamSMT" target="_blank" rel="noopener noreferrer"><strong
+            class="contact-icon" aria-hidden="true"><svg viewBox="0 0 16 16">
+              <path
+                d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z" />
+            </svg></strong><span>github.com/AhmedHythamSMT</span></a>
+        <a class="xcontact" href="https://www.linkedin.com/in/ahmedhythamsmt/" target="_blank"
+          rel="noopener noreferrer"><strong class="contact-icon" aria-hidden="true"><svg viewBox="0 0 24 24">
+              <path
+                d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.36V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.59 0 4.25 2.36 4.25 5.44v6.3zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z" />
+            </svg></strong><span>in/ahmedhythamsmt</span></a>
+      </div>
+      <p class="xfoot">© 2026 Ahmed Hytham — Mobile Developer</p>
+    </section>
+  </main>
+
+  <button class="totop" type="button" aria-label="Back to top" title="Back to top">
+    <svg viewBox="0 0 12 8" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M10.6 7.4 6 2.8 1.4 7.4 0 6 6 0l6 6z" />
+    </svg>
+  </button>
+
+  <div class="lb" id="lightbox" hidden>
+    <img alt="">
+    <span class="lb-x" aria-hidden="true">&#10005;</span>
+  </div>
+
+  <script>
+    (function () {
+      "use strict";
+      var RM = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var CH = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+      var DUR = 400;   /* every label resolves in the same time, whatever its length */
+
+      /* ---------------------------------------------------------------
+         1. DECODE LABELS
+         Every interactive label resolves left-to-right with a short band
+         of random letters running ahead of the resolved characters and
+         nothing rendered beyond it — the behaviour in the reference clip.
+         Each label's natural width is reserved first so a scramble can
+         never reflow the row it sits in.
+      ---------------------------------------------------------------- */
+      var labels = [].slice.call(document.querySelectorAll('.t'));
+      labels.forEach(function (el) { el.dataset.text = el.textContent; });
+
+      function reserve() {
+        var w = [];
+        labels.forEach(function (el) { el.style.width = ''; });
+        labels.forEach(function (el) { w.push(el.getBoundingClientRect().width); });
+        labels.forEach(function (el, i) { el.style.width = (Math.ceil(w[i] * 100) / 100) + 'px'; });
+      }
+
+      function settle(el) {
+        if (el._raf) { cancelAnimationFrame(el._raf); el._raf = 0; }
+        if (el._t) { clearTimeout(el._t); el._t = 0; }
+        el.textContent = el.dataset.text;
+      }
+
+      function decode(el, dur) {
+        var text = el.dataset.text, n = text.length;
+        if (RM) { settle(el); return; }
+        settle(el);
+        var D = dur || DUR;
+        var t0 = performance.now(), lastRoll = 0;
+        var rand = new Array(n);
+        function roll() { for (var i = 0; i < n; i++) rand[i] = CH.charAt((Math.random() * 26) | 0); }
+        roll();
+        function step(now) {
+          var p = Math.min(1, (now - t0) / D), front = p * n, out = '', i;
+          if (now - lastRoll > 45) { roll(); lastRoll = now; }
+          for (i = 0; i < n; i++) {
+            var c = text.charAt(i);
+            if (i < front) out += c;
+            else if (i < front + 3.6) out += (c === ' ' ? ' ' : rand[i]);
+            else break;
+          }
+          el.textContent = out;
+          if (p < 1) el._raf = requestAnimationFrame(step); else settle(el);
+        }
+        el._raf = requestAnimationFrame(step);
+        /* if frames are throttled (background tab, reduced power), the label still
+           resolves on its own rather than sitting half-decoded */
+        el._t = setTimeout(function () { settle(el); }, D + 500);
+      }
+
+      [].forEach.call(document.querySelectorAll('a, button'), function (el) {
+        var t = el.querySelector('.t');
+        if (!t) return;
+        el.addEventListener('pointerenter', function () { decode(t); });
+      });
+
+      /* ---------------------------------------------------------------
+         2. SCENE PARALLAX
+         The hero image answers the pointer on a long ease and drifts
+         against it, zooming very slightly as the pointer drops toward the
+         foot of the screen. With no pointer input the transform is
+         identity, so the resting frame is the reference frame.
+      ---------------------------------------------------------------- */
+      var bg = document.querySelector('.bg');
+      var tx = 0, ty = 0, cx = 0, cy = 0, running = false;
+
+      function tick() {
+        cx += (tx - cx) * 0.045;
+        cy += (ty - cy) * 0.045;
+        var w = innerWidth, h = innerHeight;
+        var dx = -cx * w * 0.0156, dy = -cy * h * 0.015;
+        var cover = 2 * Math.max(Math.abs(dx) / w, Math.abs(dy) / h);
+        var sc = 1 + cover + 0.014 * Math.max(0, cy);
+        bg.style.transform = 'translate3d(' + dx.toFixed(2) + 'px,' + dy.toFixed(2) + 'px,0) scale(' + sc.toFixed(4) + ')';
+        if (Math.abs(tx - cx) < 0.0004 && Math.abs(ty - cy) < 0.0004) { running = false; return; }
+        requestAnimationFrame(tick);
+      }
+      function wake() { if (!running && !RM) { running = true; requestAnimationFrame(tick); } }
+
+      window.addEventListener('pointermove', function (e) {
+        if (e.pointerType === 'touch') return;
+        tx = (e.clientX / innerWidth) * 2 - 1;
+        ty = (e.clientY / innerHeight) * 2 - 1;
+        wake();
+      }, { passive: true });
+      document.addEventListener('pointerleave', function () { tx = 0; ty = 0; wake(); });
+
+      /* ---------------------------------------------------------------
+         3. SMALL STATE CHANGES
+      ---------------------------------------------------------------- */
+      /* ---------------------------------------------------------------
+         5. PROJECT STACK
+         Six sticky cards in #projects. Each card shrinks from 1 down to
+         its targetScale = 1 - (totalCards - 1 - index) * 0.03 while the
+         following card travels up to cover it — the vanilla-JS
+         equivalent of Framer Motion's useScroll + useTransform, driven
+         off each card container's own scroll progress. Static under
+         reduced motion.
+      ---------------------------------------------------------------- */
+      var p2cells = [].slice.call(document.querySelectorAll('.p2-cell'));
+      var p2Tops = [], p2H = 0;
+
+      function measureStack() {
+        p2Tops = [];
+        p2H = p2cells.length ? p2cells[0].offsetHeight : 0;
+        var sy = window.pageYOffset || document.documentElement.scrollTop;
+        for (var i = 0; i < p2cells.length; i++) {
+          p2Tops.push(p2cells[i].getBoundingClientRect().top + sy);
+        }
+      }
+
+      function p2Apply() {
+        if (RM || !p2Tops.length || !p2H) return;
+        var sy = window.pageYOffset || document.documentElement.scrollTop;
+        var line = innerWidth < 768 ? 64 : 88;   /* sticky top-16 / md:top-22 */
+        for (var i = 0; i < p2cells.length; i++) {
+          var target = 1 - (p2cells.length - 1 - i) * 0.03;
+          var p = (sy - (p2Tops[i] - line)) / p2H;
+          p = Math.max(0, Math.min(1, p));
+          var card = p2cells[i].querySelector('.p2-card');
+          if (card) card.style.transform = 'scale(' + (1 + (target - 1) * p).toFixed(4) + ')';
+        }
+      }
+
+      var p2Tick = false;
+      addEventListener('scroll', function () {
+        if (!p2Tick) {
+          p2Tick = true;
+          requestAnimationFrame(function () { p2Tick = false; p2Apply(); });
+        }
+      }, { passive: true });
+      measureStack();
+      p2Apply();
+
+      /* ---------------------------------------------------------------
+         6. ABOUT REVEAL
+         The About paragraph uncovers character by character on scroll:
+         every glyph ramps from opacity .2 to 1 as the paragraph's own
+         scroll progress (['start 0.8', 'end 0.2']) crosses that glyph's
+         slice of the text. The invisible placeholder preserves the
+         natural wrap while an absolutely positioned live copy layers
+         above — the vanilla-JS equivalent of a Framer Motion
+         AnimatedText. Moving the cursor over the paragraph adds a
+         hover spotlight: characters near the pointer light up and
+         fill white even before their scroll slice arrives. Static
+         under reduced motion.
+      ---------------------------------------------------------------- */
+      var rvPara = document.querySelector('.summary');
+      var rvChars = [], RV_LEN = 0;
+      var rvGeo = [];                    /* per-glyph offsets relative to the paragraph */
+      var mouse = { on: false, x: 0, y: 0 };
+
+      function measureRv() {
+        rvGeo = [];
+        if (!rvPara) return;
+        var prect = rvPara.getBoundingClientRect();
+        for (var i = 0; i < rvChars.length; i++) {
+          var el = rvChars[i];
+          if (!el) { rvGeo.push(null); continue; }
+          var r = el.getBoundingClientRect();
+          rvGeo.push({ x: r.left - prect.left, y: r.top - prect.top, w: r.width, h: r.height });
+        }
+      }
+
+      function buildReveal() {
+        if (!rvPara) return;
+        var text = (rvPara.textContent || '').replace(/\s+/g, ' ').trim();
+        RV_LEN = text.length;
+        if (!RV_LEN) return;
+        var frag = document.createDocumentFragment();
+        for (var i = 0; i < RV_LEN; i++) {
+          var c = text.charAt(i);
+          if (c === ' ') {
+            frag.appendChild(document.createTextNode(' '));
+            rvChars.push(null);
+            continue;
+          }
+          var w = document.createElement('span');
+          w.className = 'char';
+          var ph = document.createElement('span');
+          ph.className = 'ph';
+          ph.textContent = c;
+          var live = document.createElement('span');
+          live.className = 'rv';
+          live.textContent = c;
+          w.appendChild(ph);
+          w.appendChild(live);
+          frag.appendChild(w);
+          rvChars.push(live);
+        }
+        rvPara.textContent = '';
+        rvPara.appendChild(frag);
+        measureRv();
+      }
+
+      function revealApply() {
+        if (!RV_LEN) return;
+        var rect = rvPara.getBoundingClientRect();
+        var vh = innerHeight;
+        /* ['start 0.8', 'end 0.2']: p = 0 when the top reaches 80% of the
+           viewport, p = 1 when the bottom reaches 20% of it */
+        var p = (vh * 0.8 - rect.top) / (rect.height + vh * 0.6);
+        p = Math.max(0, Math.min(1, p));
+        var pos = p * RV_LEN;
+        for (var i = 0; i < RV_LEN; i++) {
+          var el = rvChars[i];
+          if (!el) continue;
+          var local = pos - i;
+          if (mouse.on) {
+            var g = rvGeo[i];
+            if (g) {
+              var dx = rect.left + g.x + g.w / 2 - mouse.x;
+              var dy = rect.top + g.y + g.h / 2 - mouse.y;
+              var dist = Math.sqrt(dx * dx + dy * dy);
+              var infl = Math.max(0, 1 - dist / 150);  /* 150px hover spotlight */
+              if (dist < 26) infl = 1;                  /* hard-lit core under the pointer */
+              if (infl > local) local = infl;
+            }
+          }
+          if (local <= 0) { el.style.opacity = '0.2'; el.classList.remove('lit'); }
+          else if (local >= 1) { el.style.opacity = '1'; el.classList.add('lit'); }
+          else { el.style.opacity = (0.2 + 0.8 * local).toFixed(3); el.classList.remove('lit'); }
+        }
+      }
+
+      if (!RM && rvPara) {
+        buildReveal();
+        var rvTick = false;
+        var rvSchedule = function () {
+          if (!rvTick) {
+            rvTick = true;
+            requestAnimationFrame(function () { rvTick = false; revealApply(); });
+          }
+        };
+        addEventListener('scroll', function () { rvSchedule(); }, { passive: true });
+        rvPara.addEventListener('mousemove', function (e) {
+          mouse.on = true;
+          mouse.x = e.clientX;
+          mouse.y = e.clientY;
+          rvSchedule();
+        });
+        rvPara.addEventListener('mouseleave', function () {
+          mouse.on = false;
+          revealApply();
+        });
+        revealApply();
+      }
+
+      /* ---------------------------------------------------------------
+         4. BOOT — reserve widths once the face is ready, then run one
+         decode pass so the chrome resolves as the hero rises.
+      ---------------------------------------------------------------- */
+      function boot() {
+        reserve();
+        measureStack();
+        p2Apply();
+        measureRv();
+
+        revealApply();
+        if (RM) return;
+        /* the decoding labels carry the same score as the CSS above: each group's
+           type resolves just after its container has begun arriving */
+        function at(sel, t0, step) {
+          [].slice.call(document.querySelectorAll(sel)).forEach(function (el, i) {
+            setTimeout(function () { decode(el); }, t0 + i * (step || 0));
+          });
+        }
+        at('.resume .t', 330);
+        at('.menu .t', 420);
+        at('.links a .t', 360, 45);
+        at('.cta .t', 900);
+        at('.dock .t', 1000, 60);
+        /* entrance is over by ~1.52s; the class comes off well after that and every
+           label is force-settled, so no motion can outlive the sequence */
+        setTimeout(function () { document.documentElement.classList.remove('anim'); }, 2200);
+        setTimeout(function () { labels.forEach(settle); }, 2600);
+      }
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(boot); else addEventListener('load', boot);
+
+      var rt;
+      addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(function () { reserve(); measureStack(); p2Apply(); measureRv(); revealApply(); }, 160); });
+
+      /* ---------------------------------------------------------------
+         7. NAV — the fixed masthead stays put while scrolling; on the
+         collapsed width the same nav set hangs off the MENU pill.
+      ---------------------------------------------------------------- */
+      var menuBtn = document.querySelector('.menu');
+      if (menuBtn) {
+        menuBtn.addEventListener('click', function () {
+          var open = document.body.classList.toggle('nav-open');
+          menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+        });
+        [].slice.call(document.querySelectorAll('#navset a')).forEach(function (a) {
+          a.addEventListener('click', function () {
+            document.body.classList.remove('nav-open');
+            menuBtn.setAttribute('aria-expanded', 'false');
+          });
+        });
+      }
+
+      /* ---------------------------------------------------------------
+         8. LIGHTBOX — project media opens the full file fullscreen
+      ---------------------------------------------------------------- */
+      var lb = document.getElementById('lightbox');
+      if (lb) {
+        var lbImg = lb.querySelector('img');
+        var closeLb = function () {
+          lb.classList.remove('on');
+          document.body.classList.remove('lb-open');
+          setTimeout(function () { lb.hidden = true; lbImg.removeAttribute('src'); }, RM ? 0 : 250);
+        };
+        [].slice.call(document.querySelectorAll('.p2-media')).forEach(function (m) {
+          if (!m.querySelector('img')) return;
+          m.setAttribute('role', 'button');
+          m.setAttribute('tabindex', '0');
+          m.setAttribute('aria-label', 'Open screenshot fullscreen');
+          var openLb = function () {
+            var img = m.querySelector('img');
+            lbImg.src = img.currentSrc || img.src;
+            lbImg.alt = img.alt;
+            lb.hidden = false;
+            document.body.classList.add('lb-open');
+            if (!RM) requestAnimationFrame(function () { lb.classList.add('on'); });
+            else lb.classList.add('on');
+          };
+          m.addEventListener('click', openLb);
+          m.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openLb(); }
+          });
+        });
+        lb.addEventListener('click', closeLb);
+        addEventListener('keydown', function (e) {
+          if (e.key === 'Escape' && !lb.hidden) closeLb();
+        });
+      }
+
+      /* ---------------------------------------------------------------
+         9. BACK TO TOP — appears past the hero, glides home
+      ---------------------------------------------------------------- */
+      var topBtn = document.querySelector('.totop');
+      if (topBtn) {
+        addEventListener('scroll', function () {
+          var sy = window.pageYOffset || document.documentElement.scrollTop;
+          if (sy > window.innerHeight * 0.6) topBtn.classList.add('on');
+          else topBtn.classList.remove('on');
+        }, { passive: true });
+        topBtn.addEventListener('click', function () {
+          if (RM) window.scrollTo(0, 0);
+          else window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+      }
+    })();
+  </script>
+</body>
+
+</html>
